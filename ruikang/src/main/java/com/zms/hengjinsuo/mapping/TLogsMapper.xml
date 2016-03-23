@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TLogsMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TLogs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="managerId" property="managerid" jdbcType="INTEGER" />
+    <result column="typeFlag" property="typeflag" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="modiTime" property="moditime" jdbcType="TIMESTAMP" />
+    <result column="sourceIp" property="sourceip" jdbcType="VARCHAR" />
+    <result column="accessUrl" property="accessurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, managerId, typeFlag, content, modiTime, sourceIp, accessUrl
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TLogsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_logs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_logs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_logs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TLogsExample" >
+    delete from t_logs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TLogs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_logs (managerId, typeFlag, content, 
+      modiTime, sourceIp, accessUrl
+      )
+    values (#{managerid,jdbcType=INTEGER}, #{typeflag,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{moditime,jdbcType=TIMESTAMP}, #{sourceip,jdbcType=VARCHAR}, #{accessurl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TLogs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_logs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="managerid != null" >
+        managerId,
+      </if>
+      <if test="typeflag != null" >
+        typeFlag,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="moditime != null" >
+        modiTime,
+      </if>
+      <if test="sourceip != null" >
+        sourceIp,
+      </if>
+      <if test="accessurl != null" >
+        accessUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="managerid != null" >
+        #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="typeflag != null" >
+        #{typeflag,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="moditime != null" >
+        #{moditime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceip != null" >
+        #{sourceip,jdbcType=VARCHAR},
+      </if>
+      <if test="accessurl != null" >
+        #{accessurl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TLogsExample" resultType="java.lang.Integer" >
+    select count(*) from t_logs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_logs
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.managerid != null" >
+        managerId = #{record.managerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeflag != null" >
+        typeFlag = #{record.typeflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moditime != null" >
+        modiTime = #{record.moditime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sourceip != null" >
+        sourceIp = #{record.sourceip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessurl != null" >
+        accessUrl = #{record.accessurl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_logs
+    set id = #{record.id,jdbcType=INTEGER},
+      managerId = #{record.managerid,jdbcType=INTEGER},
+      typeFlag = #{record.typeflag,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      modiTime = #{record.moditime,jdbcType=TIMESTAMP},
+      sourceIp = #{record.sourceip,jdbcType=VARCHAR},
+      accessUrl = #{record.accessurl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TLogs" >
+    update t_logs
+    <set >
+      <if test="managerid != null" >
+        managerId = #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="typeflag != null" >
+        typeFlag = #{typeflag,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="moditime != null" >
+        modiTime = #{moditime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceip != null" >
+        sourceIp = #{sourceip,jdbcType=VARCHAR},
+      </if>
+      <if test="accessurl != null" >
+        accessUrl = #{accessurl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TLogs" >
+    update t_logs
+    set managerId = #{managerid,jdbcType=INTEGER},
+      typeFlag = #{typeflag,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      modiTime = #{moditime,jdbcType=TIMESTAMP},
+      sourceIp = #{sourceip,jdbcType=VARCHAR},
+      accessUrl = #{accessurl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

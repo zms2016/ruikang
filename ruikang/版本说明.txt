@@ -1,0 +1,312 @@
+﻿
+
+ 2016-3-19改版
+  
+  1 项目管理增加二级菜单 “收款计划"   manager/getReceiveList.html
+ 
+  2 财务核算增加二级菜单 "资金池"  manager/getMoney.html
+  
+  3 增加一个表t_money存放资金池流动记录
+ 
+4 删除理财项目前，增加javascript confirm验证
+
+5 修改融资项目表，增加 起息日期 第一次还款日期 借款期限，银行账号
+
+---3月20日---
+
+6 修改新增理财项目界面，增加起息日期 第一次还款日期 借款期限 录入窗
+  根据融资客户动态调用getBanksByRongziId获取下拉银行列表
+ 
+ 7 逆向工程，产生invests bean dao mapping
+ 
+ 8 录入窗口提交前验证输入值，后台保存
+ 
+ 9 保存理财项目同时操作资金池 增加交易记录
+ 
+ 10 创建 待收款 数据表 t_receive
+   
+ 11 保存理财项目同时生成 待收款列表
+    计算先息后本和一次性还本付息2中还款方式的利息和本金收款计划
+ 
+ 12 获取还款计划表
+ 
+13  收款计划表检索翻页
+
+----3月21日---
+
+14 收款操作 
+   更新还款计划表状态
+   资金池金额变动
+   如果是最后一期 还需要修改 借款项目状态
+  
+  15 为了测试方便，整理一个rest数据库脚本
+    
+  16  登记收款操作可以定义为逾期和异常和还款
+     根据需要更改的状态 判断业务逻辑是否要更新资金池
+ 
+    ----3月22日--
+    
+  17 修改 删除 融资项目逻辑
+   如果收款计划变动了则不允许删除
+   如果合同表里有关联数据，则不允许删除
+   如果收款计划和合同都没有关联的数据，说明是刚创建的，可以删除   因为融资项目变动会改动资金池，所以资金池要增加相应的金额！
+   
+  
+   
+   18 理财客户投资时，变动资金池 （ 0 融资借款减 1融资人还款加 2 财务充值加 3财务提现减 4理财客户入账加 5付息给理财客户减  6产品经理删除融资项目减 7 财务删除理财单据减）
+       1 财务单据录入 增加资金池
+       2 财务财务单据删除 （如果还款计划变动，不允许删除！）---- 减少资金池
+     
+   
+   19  给理财客户付款的时候 修改资金池
+          还款计划登记，变动资金池
+
+     增加财务 手工 修改资金池功能 （未完)
+     显示资金池余额和变动明细（未完)
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+ 10-29  为了适应不同项目，把 菜单 增加一个字段 isUse ,查询的时候  把 isUse为1的查询出来
+            
+  10-30 新增几个表 用来处理 融资项目用
+  
+10-3
+    1 解决 父页面刷新， 右边 内容 frame里的url不变
+	       1 拦截器，把除了 manager/main.html的 路径 放进session nowUrl属性中
+	       2 main的 controller 把 session 放到 Model里 返回给页面
+	       3 页面 c if 判断是否为 null ,  frame的src 设置为 default_main.html 或者 model属性里的 url
+  
+    2  给菜单表 增加 显示顺序 的标识
+    
+    3  分页 pageVo改造，获取 fromNum的时候 调用 getPageSize() 而不是 pageSize，才能获取到 fromNum
+    
+    3  前台页面 多个 查询变量的时候 全部放到 pageVo的 conditions中去，前台设置为 conditions.name  conditions.age等
+
+
+  11-10 jquery-ui日历控件  增加 jquery ui.css  js
+  	 1 <input type="text"  class="form-control"  id="backtime"   name="backtime">
+	 2 $(function() {
+	
+	     $( "#backtime" ).datepicker();
+	     $( "#backtime" ).datepicker( "option", "dateFormat", "yy-mm-dd");
+	 
+	     });
+ 
+       3如果要给控件设置时间
+       
+            $( "#backtime" ).datepicker().datepicker('setDate',$("#lastTime").val());
+ 
+
+11-11 弃用 jquery ui日历控件，因为选择日期的时候 只能用 page down up来一个月一个月翻 
+ 
+      使用 laydate控件 国产的
+      
+      
+      11-21
+    融资项目剩余金额逻辑修改：
+      财务单据录入时，把剩余金额减少， 财务登记还款的最后一笔，把剩余金额增加。  同时修改融资项目表，增加一个剩余金额字段，可以让项目经理和财务手工调整金额  
+      
+      
+       理财客户  ： 
+       
+          客户列表 只有部门为 ”客服"  的人员 和 admin  才能查看所有数据， 其他的只能看自己的数据
+       
+         理财收益:
+            任何人进去都只能看到自己的。 只有  admin 和 张兰兰     进去 可以看到所有的数据  (后台控制 vipController.java 241行)
+            只有 admin和 张兰兰 可以看到 导出 按钮 （前台控制 getSchedules.jsp 186)
+      
+        拜访记录:
+           
+             admin    或者客服部门人员（部门为客服）   则不加限制     ,否则强制增加 条件过滤 只能看到自己
+             
+      
+      11-23 增加 删除操作的 逻辑判断
+      
+         1 删除 理财客户的时候 判断 有没有签过合同，有的话就不让删除
+         2 拜访记录未做限制 可以删除自己的拜访记录
+         3 融资客户 删除的时候 判断2次， 第一 判断有没有银行账户使用了它 第二判断 融资项目里也没有 有的话都不让删除
+         4 银行账号 删除的时候 判断 合同里有没有，有的话就不让删除
+         5 删除融资项目的时候 判断合同里有没有  有的话就不让删除
+         6 合同列表，删除合同的时候 判断 财务单据bill和 还款计划表里有没有  （还款计划表增加一个字段 contractidInt)   
+         
+         增加理财单据列表 给财务使用
+          1 新增二级菜单  单据列表  manager/getBillList.html  增加 BillVo类
+          2 提供 删除功能， 删除（ 要把 invest项目表的余额增加  ， 要把 还款计划数据删除，如果有已经还款的信息 则不能删除！)
+          3 增加单据列表显示 （合同基础信息 项目信息 融资人信息 回款计划）
+         
+         
+         11-24
+         
+         
+         
+         增加日志 
+           1 登录模块增加日志
+           2 删除访问记录的时候增加日志
+           3其他地方不用加日志，因为系统都已经做了数据关联判断，有用的数据是无法在页面上删除的
+           
+           财务单据列表界面 增加搜索条件
+              增加按理财项目 为条件的查询 功能
+             
+             
+             11-24
+             完善日志功能，增加一个模块处理日志，数据入数据库
+             1 增加 一个表 存放 日志数据 t_logs
+             2 定义bean TLogs类
+             3 增加controller 和 services
+             4 增加显示列表页面
+             5 增加 LogVo类用来展示数据
+             6 提供 条件（操作时间段 操作人 操作内容 ）查询 分页
+             7 增加一个菜单 
+             
+             11-26
+              增加单据列表 根据项目统计累计金额的功能
+              列表增加融资人列
+             
+          11-30
+            修改 还款利息算法， 包括 一次性还款 和 先息后本的  
+              	  一次性还款付息 利息计算方法：  先计算一天的日期， 然后算  第一次还款时间和起息时间 的天数+1 ，  最后总利息就是 日利息*天数，财务录入的时候 ”投资期限“ 字段不参与计算！
+                  先息后本:
+                        由于修改为 每个月 只有 5,15,25 三个还款期， 所以财务录入的时候，需要写第一次还款日期时间和 起息日期
+                        第一个月： 先用年收益率除以360天 得到一天的收益， 然后 计算 第一次还款日期和起息日期之间的天数， 最后得到第一期的收益
+                        其余月份: 月收益为  年收益率除以12 得到一个月的收益，而且要把第一月的 日 保留下来，其余还款时间： 月份增加，日期不动
+                        
+          2015-12-23
+                修改 续签合同 删除后，原先合同变为 已签的BUG， 删除合同的时候先判断是否是续签，如果是续签就把原合同标志改为4 而不是2
+                增加菜单 还款计算器
+                
+           2016-01-08 还款计划表 显示列表增加 融资项目字段 ， 导出 增加 融资项目和还款方式 2个字段
+           
+           
+           
+           
+           
+                
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>基础版《《《《《《《《《《《《《《《《《《《
+
+版本 1.0
+基于 maven3.3   mybatis3.30   spring 4.2.1  springmvc 4.2.1  mysql5.6.2   
+
+准备工作：
+
+      导入MYECLIPSE后 先 用建表语句建立数据库
+      然后 逆向工程 生成 bean  dao mapping文件
+      逆向工程使用方法： 这里使用的是JAVA方法，在 (default package)包下面 有个 Mybatis.java文件 执行以下 即可。它需要 源代码跟目录下的generatorConfig.xml文件
+      
+      下面介绍 本项目实现的功能
+
+1   实现对 表的    增加  修改 删除  （用户表）
+ 
+2   使用 mapper接口类 ，自动生成DAO实现代理类 , 简单的 插入 删除 新增  可以不需要 手写 DAO层
+
+3  图片上传    
+ 
+4   图片验证码
+
+5全局异常处理类
+         
+6 拦截器 
+         
+7 购物车  
+
+ 8 生成订单
+        订单 生成后获取 订单编号 ，继续插入订单明细表 ，  mybatis 的 xml 文件必须配置  
+          <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+              SELECT LAST_INSERT_ID()
+             </selectKey>
+             
+ 9  增加 kindedit 文本编辑器 功能
+    增加测试的2个表  类别表 t_content_types 和 内容表 t_contents
+ 
+ 10  由于数据库 字段存在下划线，导致 字段和 实体类 的属性无法自动适配，所以要手工写一个对应关系 
+              只需要写一个 Map, 然后 select的返回值 设置为这个MAP， 在业务层不用处理这个事情，连dao层都不用修改，mybatis会自动关联
+              
+  11权限管理  支持 角色管理 和 对个人进行角色配置或者直接 功能设置  2者之间是并的关系
+     新增 7个表
+     对角色管理 （新增 改名， 设置权限）
+     对个人赋予角色
+     对个人赋予功能
+     
+     定义请求路径对应的 功能编号（通过功能编号判断是否有权限）
+     拦截器（进行权限控制， 未做）  
+     
+ 
+ 12 增加分页标签  （ok了，一开始由于 jsp里 url里带了参数， 但是 paperTag里又读了一遍导致 ，点2次连接后 出现异常，参数会累计）
+    1 写一个类 com.zms.tab.pagerTag
+    2 写 MypaperTag.tld  (xml头中的taglib版本必须是2.1）
+    3 jsp 引入 tld
+    4 jsp直接使用 标签
+    
+    13 登录界面 响应 回车 触发  提交按钮 （10-10）
+    
+    14  由于 在windows开发， 实际是部署到linux上，所以获取tomcat根路径的方法不一样
+        所以在  com.zms.util.Contants中 定义常量， 切换
+        
+     15  11条权限管理 只做了 角色 权限 用户的绑定，(未做路径 权限拦截)
+          10.14 实现权限拦截
+           而且要实现 ，可以增加一级菜单， 二级菜单  定义 action路径绑定到二级菜单
+           
+           根据action 判断 用户是否有权限访问
+           
+         /* 根据用户id 获取 所有 二级权限 列表 */
+    select   r.id,r.typeid,r.url  from t_rights as r where
+             r.id in (select ros.rightId from t_right_user as ros where ros.userId = 1)
+             or r.id in (select rog.rightId from t_role_right as rog where roleId in (select gos.roleId from t_role_user as gos where gos.userId = 1 ))   
+            
+        
+  /* 根据用户id 获取 所拥有的所有一级权限  */   
+  select *  from t_right_types where id in(
+    select  distinct(r.typeid)  from t_rights as r where
+             r.id in (select ros.rightId from t_right_user as ros where ros.userId = 1)
+             or r.id in (select rog.rightId from t_role_right as rog where roleId in (select gos.roleId from t_role_user as gos where gos.userId = 1 ))   
+             )
+             
+ 
+      /* 根据用户id获取到所拥有的 所有一级权限后，遍历 获取该用户拥有的该一级目录下的 所有二级权限 */
+     select r.id,r.typeid,r.url from t_rights as r where  typeid=2 
+             and  ( r.id in (select ros.rightId from t_right_user as ros where ros.userId = 1)
+             or r.id in (select rog.rightId from t_role_right as rog where roleId in (select gos.roleId from t_role_user as gos where gos.userId = 1 )) )  
+    
+    
+            
+       
+       16  增加恒金所网站
+          10.16 使用 服务器的数据库 逆向工程 ， 把逆向工程类替换本地工程  把本地工程 数据库指向 服务器
+          
+          
+          
+   》》》》》》》》》》》》》》》》》》》》》》》》》》》最终说明：《《《《《《《《《《《《《《《《《《《《《《《《《《《《《《《《《
+   
+   
+            2015-10-27 恒金所网站 已经全部更新完毕。
+            
+            1  开发过程中 使用 Mybatis 逆向工程  ，所以  bean, db, mapping 三个包 全部是逆向自动生成的。  
+                 为了业务需要，在 db 和 mapping 包中 各添加了一个自定义的文件 workmapper ，数据库改动后，逆向生成，然后把逆向生成的3个包 覆盖 本工程三个包，不要把自定义2个文件 删除
+            2   除了 分页查询 自己写了几个语句在 mapping的  workmapper.xml文件中， 其他的都是自动的语句  什么 条件  排序 都可以通过 T**Example 类来实现
+            
+            3  查询分页 用到了自己的 标签  
+            
+            4  数据库建表的时候 字段全部用驼峰 不要用下划线！ 
+                   因为下划线逆向工程后，自动的mapper.xml会增加 map对应， 但是如果自己写的mapper.xml 也需要自己复制一份Map过来，比较麻烦
+                   
+            5 Kindedtior 富文本编辑器
+               如果需要ajax提交 富翁编辑器，需要在 初始化 javascript中增加 	afterBlur: function () { this.sync(); }, //如果使用 ajax提交 form 这句必须加，否则后台娶不到文本编辑器的值
+               参考  addFinacial.jsp中的配置
+               
+             
+             6 关于弹窗，用了 layer弹窗， 还不是很熟。 以后我还是尽量用bootstrap的 模态框好了。
+             
+                 参考   getRightActionList.jsp
+             
+                Layer用来 在ajax提交后 弹出 toast 还是很方便的的,
+                
+                而且自己创建了一个toast.js 可以用来定义相对于哪个元素弹框 
+                
+             7 所有from提交 建议使用ajax 提交
+                使用到　jquery.form.js 插件
+               
+            
+            
+            
+       
+          

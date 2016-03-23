@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TInvestsMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TInvests" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="investsId" property="investsid" jdbcType="VARCHAR" />
+    <result column="rongziId" property="rongziid" jdbcType="INTEGER" />
+    <result column="rzBankId" property="rzbankid" jdbcType="INTEGER" />
+    <result column="rzMoney" property="rzmoney" jdbcType="REAL" />
+    <result column="backType" property="backtype" jdbcType="INTEGER" />
+    <result column="contractTime" property="contracttime" jdbcType="DATE" />
+    <result column="lastBackTime" property="lastbacktime" jdbcType="DATE" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="needMoney" property="needmoney" jdbcType="REAL" />
+    <result column="beginTime" property="begintime" jdbcType="DATE" />
+    <result column="longTime" property="longtime" jdbcType="SMALLINT" />
+    <result column="firstTime" property="firsttime" jdbcType="DATE" />
+    <result column="apr" property="apr" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, investsId, rongziId, rzBankId, rzMoney, backType, contractTime, lastBackTime, 
+    memo, flag, needMoney, beginTime, longTime, firstTime, apr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TInvestsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_invests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_invests
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_invests
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TInvestsExample" >
+    delete from t_invests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TInvests" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_invests (name, investsId, rongziId, 
+      rzBankId, rzMoney, backType, 
+      contractTime, lastBackTime, memo, 
+      flag, needMoney, beginTime, 
+      longTime, firstTime, apr
+      )
+    values (#{name,jdbcType=VARCHAR}, #{investsid,jdbcType=VARCHAR}, #{rongziid,jdbcType=INTEGER}, 
+      #{rzbankid,jdbcType=INTEGER}, #{rzmoney,jdbcType=REAL}, #{backtype,jdbcType=INTEGER}, 
+      #{contracttime,jdbcType=DATE}, #{lastbacktime,jdbcType=DATE}, #{memo,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=INTEGER}, #{needmoney,jdbcType=REAL}, #{begintime,jdbcType=DATE}, 
+      #{longtime,jdbcType=SMALLINT}, #{firsttime,jdbcType=DATE}, #{apr,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TInvests" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_invests
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="investsid != null" >
+        investsId,
+      </if>
+      <if test="rongziid != null" >
+        rongziId,
+      </if>
+      <if test="rzbankid != null" >
+        rzBankId,
+      </if>
+      <if test="rzmoney != null" >
+        rzMoney,
+      </if>
+      <if test="backtype != null" >
+        backType,
+      </if>
+      <if test="contracttime != null" >
+        contractTime,
+      </if>
+      <if test="lastbacktime != null" >
+        lastBackTime,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="needmoney != null" >
+        needMoney,
+      </if>
+      <if test="begintime != null" >
+        beginTime,
+      </if>
+      <if test="longtime != null" >
+        longTime,
+      </if>
+      <if test="firsttime != null" >
+        firstTime,
+      </if>
+      <if test="apr != null" >
+        apr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="investsid != null" >
+        #{investsid,jdbcType=VARCHAR},
+      </if>
+      <if test="rongziid != null" >
+        #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="rzbankid != null" >
+        #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="rzmoney != null" >
+        #{rzmoney,jdbcType=REAL},
+      </if>
+      <if test="backtype != null" >
+        #{backtype,jdbcType=INTEGER},
+      </if>
+      <if test="contracttime != null" >
+        #{contracttime,jdbcType=DATE},
+      </if>
+      <if test="lastbacktime != null" >
+        #{lastbacktime,jdbcType=DATE},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="needmoney != null" >
+        #{needmoney,jdbcType=REAL},
+      </if>
+      <if test="begintime != null" >
+        #{begintime,jdbcType=DATE},
+      </if>
+      <if test="longtime != null" >
+        #{longtime,jdbcType=SMALLINT},
+      </if>
+      <if test="firsttime != null" >
+        #{firsttime,jdbcType=DATE},
+      </if>
+      <if test="apr != null" >
+        #{apr,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TInvestsExample" resultType="java.lang.Integer" >
+    select count(*) from t_invests
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_invests
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investsid != null" >
+        investsId = #{record.investsid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rongziid != null" >
+        rongziId = #{record.rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rzbankid != null" >
+        rzBankId = #{record.rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rzmoney != null" >
+        rzMoney = #{record.rzmoney,jdbcType=REAL},
+      </if>
+      <if test="record.backtype != null" >
+        backType = #{record.backtype,jdbcType=INTEGER},
+      </if>
+      <if test="record.contracttime != null" >
+        contractTime = #{record.contracttime,jdbcType=DATE},
+      </if>
+      <if test="record.lastbacktime != null" >
+        lastBackTime = #{record.lastbacktime,jdbcType=DATE},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.needmoney != null" >
+        needMoney = #{record.needmoney,jdbcType=REAL},
+      </if>
+      <if test="record.begintime != null" >
+        beginTime = #{record.begintime,jdbcType=DATE},
+      </if>
+      <if test="record.longtime != null" >
+        longTime = #{record.longtime,jdbcType=SMALLINT},
+      </if>
+      <if test="record.firsttime != null" >
+        firstTime = #{record.firsttime,jdbcType=DATE},
+      </if>
+      <if test="record.apr != null" >
+        apr = #{record.apr,jdbcType=REAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_invests
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      investsId = #{record.investsid,jdbcType=VARCHAR},
+      rongziId = #{record.rongziid,jdbcType=INTEGER},
+      rzBankId = #{record.rzbankid,jdbcType=INTEGER},
+      rzMoney = #{record.rzmoney,jdbcType=REAL},
+      backType = #{record.backtype,jdbcType=INTEGER},
+      contractTime = #{record.contracttime,jdbcType=DATE},
+      lastBackTime = #{record.lastbacktime,jdbcType=DATE},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER},
+      needMoney = #{record.needmoney,jdbcType=REAL},
+      beginTime = #{record.begintime,jdbcType=DATE},
+      longTime = #{record.longtime,jdbcType=SMALLINT},
+      firstTime = #{record.firsttime,jdbcType=DATE},
+      apr = #{record.apr,jdbcType=REAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TInvests" >
+    update t_invests
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="investsid != null" >
+        investsId = #{investsid,jdbcType=VARCHAR},
+      </if>
+      <if test="rongziid != null" >
+        rongziId = #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="rzbankid != null" >
+        rzBankId = #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="rzmoney != null" >
+        rzMoney = #{rzmoney,jdbcType=REAL},
+      </if>
+      <if test="backtype != null" >
+        backType = #{backtype,jdbcType=INTEGER},
+      </if>
+      <if test="contracttime != null" >
+        contractTime = #{contracttime,jdbcType=DATE},
+      </if>
+      <if test="lastbacktime != null" >
+        lastBackTime = #{lastbacktime,jdbcType=DATE},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="needmoney != null" >
+        needMoney = #{needmoney,jdbcType=REAL},
+      </if>
+      <if test="begintime != null" >
+        beginTime = #{begintime,jdbcType=DATE},
+      </if>
+      <if test="longtime != null" >
+        longTime = #{longtime,jdbcType=SMALLINT},
+      </if>
+      <if test="firsttime != null" >
+        firstTime = #{firsttime,jdbcType=DATE},
+      </if>
+      <if test="apr != null" >
+        apr = #{apr,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TInvests" >
+    update t_invests
+    set name = #{name,jdbcType=VARCHAR},
+      investsId = #{investsid,jdbcType=VARCHAR},
+      rongziId = #{rongziid,jdbcType=INTEGER},
+      rzBankId = #{rzbankid,jdbcType=INTEGER},
+      rzMoney = #{rzmoney,jdbcType=REAL},
+      backType = #{backtype,jdbcType=INTEGER},
+      contractTime = #{contracttime,jdbcType=DATE},
+      lastBackTime = #{lastbacktime,jdbcType=DATE},
+      memo = #{memo,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      needMoney = #{needmoney,jdbcType=REAL},
+      beginTime = #{begintime,jdbcType=DATE},
+      longTime = #{longtime,jdbcType=SMALLINT},
+      firstTime = #{firsttime,jdbcType=DATE},
+      apr = #{apr,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

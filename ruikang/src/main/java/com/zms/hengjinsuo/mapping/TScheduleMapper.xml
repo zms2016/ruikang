@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TSchedule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="contractId" property="contractid" jdbcType="VARCHAR" />
+    <result column="billId" property="billid" jdbcType="INTEGER" />
+    <result column="memony" property="memony" jdbcType="REAL" />
+    <result column="memonyTime" property="memonytime" jdbcType="DATE" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="vipName" property="vipname" jdbcType="VARCHAR" />
+    <result column="managerId" property="managerid" jdbcType="INTEGER" />
+    <result column="investId" property="investid" jdbcType="INTEGER" />
+    <result column="backTime" property="backtime" jdbcType="DATE" />
+    <result column="lastFlag" property="lastflag" jdbcType="BIT" />
+    <result column="vipId" property="vipid" jdbcType="INTEGER" />
+    <result column="rongziId" property="rongziid" jdbcType="INTEGER" />
+    <result column="rzBankId" property="rzbankid" jdbcType="INTEGER" />
+    <result column="contractidInt" property="contractidint" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, contractId, billId, memony, memonyTime, flag, vipName, managerId, investId, backTime, 
+    lastFlag, vipId, rongziId, rzBankId, contractidInt
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TScheduleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TScheduleExample" >
+    delete from t_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TSchedule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_schedule (contractId, billId, memony, 
+      memonyTime, flag, vipName, 
+      managerId, investId, backTime, 
+      lastFlag, vipId, rongziId, 
+      rzBankId, contractidInt)
+    values (#{contractid,jdbcType=VARCHAR}, #{billid,jdbcType=INTEGER}, #{memony,jdbcType=REAL}, 
+      #{memonytime,jdbcType=DATE}, #{flag,jdbcType=INTEGER}, #{vipname,jdbcType=VARCHAR}, 
+      #{managerid,jdbcType=INTEGER}, #{investid,jdbcType=INTEGER}, #{backtime,jdbcType=DATE}, 
+      #{lastflag,jdbcType=BIT}, #{vipid,jdbcType=INTEGER}, #{rongziid,jdbcType=INTEGER}, 
+      #{rzbankid,jdbcType=INTEGER}, #{contractidint,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TSchedule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractid != null" >
+        contractId,
+      </if>
+      <if test="billid != null" >
+        billId,
+      </if>
+      <if test="memony != null" >
+        memony,
+      </if>
+      <if test="memonytime != null" >
+        memonyTime,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="vipname != null" >
+        vipName,
+      </if>
+      <if test="managerid != null" >
+        managerId,
+      </if>
+      <if test="investid != null" >
+        investId,
+      </if>
+      <if test="backtime != null" >
+        backTime,
+      </if>
+      <if test="lastflag != null" >
+        lastFlag,
+      </if>
+      <if test="vipid != null" >
+        vipId,
+      </if>
+      <if test="rongziid != null" >
+        rongziId,
+      </if>
+      <if test="rzbankid != null" >
+        rzBankId,
+      </if>
+      <if test="contractidint != null" >
+        contractidInt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractid != null" >
+        #{contractid,jdbcType=VARCHAR},
+      </if>
+      <if test="billid != null" >
+        #{billid,jdbcType=INTEGER},
+      </if>
+      <if test="memony != null" >
+        #{memony,jdbcType=REAL},
+      </if>
+      <if test="memonytime != null" >
+        #{memonytime,jdbcType=DATE},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="vipname != null" >
+        #{vipname,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null" >
+        #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="investid != null" >
+        #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="backtime != null" >
+        #{backtime,jdbcType=DATE},
+      </if>
+      <if test="lastflag != null" >
+        #{lastflag,jdbcType=BIT},
+      </if>
+      <if test="vipid != null" >
+        #{vipid,jdbcType=INTEGER},
+      </if>
+      <if test="rongziid != null" >
+        #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="rzbankid != null" >
+        #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="contractidint != null" >
+        #{contractidint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TScheduleExample" resultType="java.lang.Integer" >
+    select count(*) from t_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_schedule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractid != null" >
+        contractId = #{record.contractid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billid != null" >
+        billId = #{record.billid,jdbcType=INTEGER},
+      </if>
+      <if test="record.memony != null" >
+        memony = #{record.memony,jdbcType=REAL},
+      </if>
+      <if test="record.memonytime != null" >
+        memonyTime = #{record.memonytime,jdbcType=DATE},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.vipname != null" >
+        vipName = #{record.vipname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerid != null" >
+        managerId = #{record.managerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.investid != null" >
+        investId = #{record.investid,jdbcType=INTEGER},
+      </if>
+      <if test="record.backtime != null" >
+        backTime = #{record.backtime,jdbcType=DATE},
+      </if>
+      <if test="record.lastflag != null" >
+        lastFlag = #{record.lastflag,jdbcType=BIT},
+      </if>
+      <if test="record.vipid != null" >
+        vipId = #{record.vipid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rongziid != null" >
+        rongziId = #{record.rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rzbankid != null" >
+        rzBankId = #{record.rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractidint != null" >
+        contractidInt = #{record.contractidint,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_schedule
+    set id = #{record.id,jdbcType=INTEGER},
+      contractId = #{record.contractid,jdbcType=VARCHAR},
+      billId = #{record.billid,jdbcType=INTEGER},
+      memony = #{record.memony,jdbcType=REAL},
+      memonyTime = #{record.memonytime,jdbcType=DATE},
+      flag = #{record.flag,jdbcType=INTEGER},
+      vipName = #{record.vipname,jdbcType=VARCHAR},
+      managerId = #{record.managerid,jdbcType=INTEGER},
+      investId = #{record.investid,jdbcType=INTEGER},
+      backTime = #{record.backtime,jdbcType=DATE},
+      lastFlag = #{record.lastflag,jdbcType=BIT},
+      vipId = #{record.vipid,jdbcType=INTEGER},
+      rongziId = #{record.rongziid,jdbcType=INTEGER},
+      rzBankId = #{record.rzbankid,jdbcType=INTEGER},
+      contractidInt = #{record.contractidint,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TSchedule" >
+    update t_schedule
+    <set >
+      <if test="contractid != null" >
+        contractId = #{contractid,jdbcType=VARCHAR},
+      </if>
+      <if test="billid != null" >
+        billId = #{billid,jdbcType=INTEGER},
+      </if>
+      <if test="memony != null" >
+        memony = #{memony,jdbcType=REAL},
+      </if>
+      <if test="memonytime != null" >
+        memonyTime = #{memonytime,jdbcType=DATE},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="vipname != null" >
+        vipName = #{vipname,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null" >
+        managerId = #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="investid != null" >
+        investId = #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="backtime != null" >
+        backTime = #{backtime,jdbcType=DATE},
+      </if>
+      <if test="lastflag != null" >
+        lastFlag = #{lastflag,jdbcType=BIT},
+      </if>
+      <if test="vipid != null" >
+        vipId = #{vipid,jdbcType=INTEGER},
+      </if>
+      <if test="rongziid != null" >
+        rongziId = #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="rzbankid != null" >
+        rzBankId = #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="contractidint != null" >
+        contractidInt = #{contractidint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TSchedule" >
+    update t_schedule
+    set contractId = #{contractid,jdbcType=VARCHAR},
+      billId = #{billid,jdbcType=INTEGER},
+      memony = #{memony,jdbcType=REAL},
+      memonyTime = #{memonytime,jdbcType=DATE},
+      flag = #{flag,jdbcType=INTEGER},
+      vipName = #{vipname,jdbcType=VARCHAR},
+      managerId = #{managerid,jdbcType=INTEGER},
+      investId = #{investid,jdbcType=INTEGER},
+      backTime = #{backtime,jdbcType=DATE},
+      lastFlag = #{lastflag,jdbcType=BIT},
+      vipId = #{vipid,jdbcType=INTEGER},
+      rongziId = #{rongziid,jdbcType=INTEGER},
+      rzBankId = #{rzbankid,jdbcType=INTEGER},
+      contractidInt = #{contractidint,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

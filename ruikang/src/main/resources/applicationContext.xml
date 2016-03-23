@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd  
+                        http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context.xsd  
+                        http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                        ">
+                        
+                        
+    <!--  加载数据库配置文件 -->
+       <context:property-placeholder   location="classpath:db.properties"/>
+       
+       <!-- 需要把扫描@services 业务层 放到 spring,  @controller扫描 放在springmvc中 ， 否则 声明式的事务管理不起作用！ -->
+	<context:component-scan base-package="com.zms.hengjinsuo.*.services" />
+ 
+      <!--  会话工厂    完美整合 mybatis， 不需要mybatis配置文件-->
+	 <bean  name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	         <!--  加载mybatis配置文件  已经不需要 mybatis配置文件了-->
+	         <!-- <property name="configLocation"  value="classpath:mybatis.xml"></property>    -->
+             <property name="dataSource"  ref="dataSource" ></property>
+             
+             <!-- 自动扫描mapping.xml文件  支持通配符 com/zms/hengjinsuo/*/mapping/*.xml -->
+		<property name="mapperLocations"    value="classpath:com/zms/hengjinsuo/mapping/*.xml"></property>
+	 
+	 </bean>
+	 
+	<!--  数据源 -->
+	 <bean  id="dataSource"  class="org.apache.commons.dbcp2.BasicDataSource">
+	   <property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		 
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!--初始化连接大小-->
+		<property name="initialSize" value="10"></property>
+		<!--连接池最大数量-->
+		<property name="maxTotal" value="30"></property>
+		<!--连接池最大空闲-->
+		<property name="maxIdle" value="10"></property>
+		<!--连接池最小空闲-->
+		<property name="minIdle" value="1"></property>
+		<!--获取连接最大等待时间-->
+		<property name="maxWaitMillis" value="60000"></property>
+		
+	 </bean>
+ 
+	  
+	  
+	      <!-- mapper接口配置 批量扫描， 自动创建代理对象
+	             创建出来的代理对象 为 mapper接口类的 名称首字母 小写
+	       -->
+	        <bean  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	                  <!-- 指定扫描的包名    默认不能用通配符，如果用通配符 必须在 sessionFactory里 扫描一次mapper.xml  -->
+	                <!--   <property name="basePackage" value="com.zms.hengjinsuo.*.dao"></property>  统配符有效  但逆向工程无法用通配符 所以 bean dao mapping 放到一个文件夹下-->
+	                  <property name="basePackage" value="com.zms.hengjinsuo.dao"></property>
+	                  
+	                     <!--  这里 必须使用sqlSessionFactoryBeanName   不能使用 sqlSessionFactory -->
+	                  <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	                  
+	        </bean>
+	 
+	 
+	 	<!--  配置事务， 一般加载service层  ，1 定义一个事务管理器  2  对哪些方法 分别做哪些事情（定义数据库的传播特性)   3 定义拦截哪些个包或者类 里的 方法 （定义切面 asptect） -->
+	
+	         
+    
+	    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+              <property name="dataSource" ref="dataSource"/>
+         </bean>
+         
+         
+         <!-- 定义传播特性（在这些方法上 如何设置事务的创博特性） -->
+         <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="get*" 		read-only="true" />
+            <tx:method name="find*"  		read-only="true" />
+            <tx:method name="select*"  	read-only="true"/>
+            <tx:method name="query*"  	read-only="true"/>
+            <tx:method name="search*"  	read-only="true"/>
+            <tx:method name="count*"  	read-only="true" />
+            <tx:method name="*"  propagation="REQUIRED"  rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+ 
+      <aop:config  >
+      <!--    定义一个切面 -->
+        <aop:pointcut id="txPointcut" expression="execution(* com.zms.hengjinsuo.*.services..*.*(..))" />
+        <!--   绑定 -->
+        <aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
+        
+    </aop:config>  
+    
+    <!-- -事务结束 -->
+    
+    
+    
+    
+    
+	               
+	 
+</beans>

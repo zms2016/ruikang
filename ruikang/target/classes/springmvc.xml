@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+ 
+	 <!-- 需要把扫描@services 业务层 放到 spring,  @controller扫描 放在springmvc中 ， 否则 声明式的事务管理不起作用！ -->
+	<context:component-scan base-package="com.zms.hengjinsuo.*.controller" />
+
+	
+
+	<!-- 扫描@Repository DAO层 ， 由于使用了 mybatis的 mapper 接口，已经在spring里扫描过了，所以这里不需要扫描DAO层 -->
+
+	<!-- <mvc:annotation-driven conversion-service="zmsTime"> </mvc:annotation-driven> 
+		自定义 时间类型转换 把前台传过来的 时间字符串 转换成 符合 项目实际需求的时间格式 （实体的时间类型格式) <bean id ="zmsTime" 
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> 
+		定义自己的转换器 <property name="converters"> <list> <bean class="com.zms.util.TimeTrans"></bean> 
+		其他类型 比如 吧字符串首字母 大写 <bean class="com.zms.util.Txxx"></bean> </list> </property> 
+		</bean> -->
+
+	<!-- <mvc:annotation-driven /> 用了这行，下面映射器和适配器可以不用写 ，但自定义 不方便， 所以还是分开写下面2个 
+		映射器 和适配器 -->
+
+	<!-- handler(controller)映射器 用来寻找 controller 就是查找 对应的 @controller注解的类- 3.2以前是 
+		org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+
+	</bean>
+
+
+	<!-- handler(controller)适配器 用来执行controller 3.2以前是 org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+
+		<!-- 消息解析 -->
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html; charset=UTF-8</value>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+				<!-- 用来配置 返回json对象的参数， 默认 会出现 乱码 需要导入 jackson-annotations.jar,jackson-core.jar,jackson-databind.jar -->
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html; charset=UTF-8</value>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+
+		<!-- 定义自己的绑定器 -->
+		<property name="webBindingInitializer" ref="zmsBinder"></property>
+
+
+	</bean>
+
+	<bean id="zmsBinder"
+		class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+
+		<!-- 使用自己的绑定 解析器 比如 这里 用来 对 日期类型进行参数绑定 -->
+		<property name="conversionService" ref="zmsTimeConversionService"></property>
+
+		<!-- 加 校验器 -->
+		<!-- <property name="validator" -->
+	</bean>
+
+	<bean id="zmsTimeConversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<!-- 定义自己的转换器 -->
+		<property name="converters">
+			<list>
+				<!-- 需要自己写一个类 public class TimeTrans implements Converter<String, Date> -->
+				<bean class="com.zms.converter.TimeTrans"></bean>
+				<!-- 其他类型转换 -->
+				<!-- <bean class="com.zms.util.Txxx"></bean> -->
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 视图解析器 配置解析JSP jstl 的解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 可以不写，因为 InternalResourceViewResolver 默认支持 jstl -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<!-- 配置前缀和后缀 ， controller层 return modelandview 返回文件时 不用写前面的路径和后面的文件后缀名 -->
+		<property name="prefix" value="/WEB-INF/page/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- 定义全局异常处理类 -->
+	<!-- 异常处理逻辑： com.zms.exception包 下面定义了一个 BaseException父类， 然后 定义 controller和 
+		service 层对应的2个类 ，所有方法都往外抛异常， 最后右GobalExceptionResolver来处理 -->
+	<bean class="com.zms.exception.GobalExceptionResolver"></bean>
+
+
+
+	<!-- 配置文件上传，如果没有使用文件上传可以不用配置， 需要引入上传组件包 当然如果不配，那么配置文件中也不必引入上传组件包 -->
+	<!-- <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		默认编码
+		<property name="defaultEncoding" value="utf-8" />
+		文件大小最大值
+		<property name="maxUploadSize" value="10485760000" />
+		内存中的最大值
+		<property name="maxInMemorySize" value="40960" />
+	</bean> -->
+	
+	
+	 <!-- 由于使用  kindeditor, 上传图片会碰到问题，所以需要自定义一个上传类 继承 CommonsMultipartResolver重写 isMultipart -->
+	 <bean id="multipartResolver" class="com.zms.resolver.MyMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+    	<property name="maxUploadSize" value="10485760000" />
+    	<property name="maxInMemorySize" value="40960" />
+     </bean>
+
+
+	<!-- 定义拦截器 按顺序执行 -->
+
+	<mvc:interceptors>
+ 
+		<mvc:interceptor>
+			<mvc:mapping path="/manager/*" />
+			<!--  不拦截的url -->
+			<mvc:exclude-mapping path="/manager/login.html" />
+			<mvc:exclude-mapping path="/manager/doLogin.html" />
+						<mvc:exclude-mapping path="/manager/loginout.html" />
+			<mvc:exclude-mapping path="/manager/404.html" />
+			<!-- <mvc:exclude-mapping path="/captcha-image.html" /> -->
+			<bean class="com.zms.intercepter.LoginIntercepter_Manager"></bean>
+
+		</mvc:interceptor>
+		
+<!-- 		     给网站 会员用的  登录拦截器
+			<mvc:interceptor>
+			<mvc:mapping path="/account/*" />
+			 不拦截的url
+		 
+			<mvc:exclude-mapping path="manager/main.html" />
+			<mvc:exclude-mapping path="/loginout.html" />
+			<bean class="com.zms.intercepter.LoginIntercepter_Front"></bean>
+
+		</mvc:interceptor>
+
+		  访问后台界面 权限拦截器
+		<mvc:interceptor>
+			<mvc:mapping path="*manager/*" />
+			 不拦截的url
+			<mvc:exclude-mapping path="manager/login.html" />
+			<mvc:exclude-mapping path="manager/doLogin.html" />
+			<mvc:exclude-mapping path="manager/defaultPage.html" />
+			
+			<mvc:exclude-mapping path="manager/404.html" />
+			<bean class="com.zms.intercepter.RoleIntercepter"></bean>
+
+		</mvc:interceptor> -->
+
+
+	</mvc:interceptors>
+	
+	
+<!--  使用 kaptcha 图片验证码   在springmvc中配置。  实验结果是再  spring中配置也可以 -->
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<prop key="kaptcha.border">yes</prop>
+						<prop key="kaptcha.border.color">220,220,220</prop>
+						<prop key="kaptcha.textproducer.font.color">blue</prop>
+					<!-- 	<prop key="kaptcha.image.width">320</prop>
+						<prop key="kaptcha.image.height">140</prop> -->
+						<prop key="kaptcha.textproducer.font.size">42</prop>
+						<prop key="kaptcha.session.key">code</prop>
+						<prop key="kaptcha.textproducer.char.length">4</prop>
+						<prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+	
+
+
+</beans>

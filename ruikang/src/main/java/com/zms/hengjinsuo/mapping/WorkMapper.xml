@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.WorkMapper" >
+   
+   <!--   这里存放所有自定义业务 -->
+   
+            <!--   根据查询条件统计 用户数，主要用来分页 -->
+        <select id="getCountOfUsers" resultType="int"  parameterType="String" >
+           select  count(*)  from t_user  where 1=1  ${value}
+        </select>
+   
+   
+            <!-- 根据查询条件查询 用户数 支持分页 -->
+      <select id="getUsers" resultType="com.zms.hengjinsuo.bean.TUser"  parameterType="String" > 
+         select  *  from t_user   where 1=1   ${value}
+        </select>
+        
+     <!--   根据条件查询 角色列表 支持分页 -->
+   <select id="getRoles" resultType="com.zms.hengjinsuo.bean.TRoles"  parameterType="String" >
+        select  *  from t_roles  where 1=1 ${value}
+  </select>
+  
+        <!--   根据查询条件 统计 角色的 记录数，主要用来分页 -->
+        <select id="getCountOfRole" resultType="int"  parameterType="String" >
+           select  count(*)  from t_roles   where 1=1 ${value}
+    </select>
+    
+     <!--  由于数据库 字段存在下划线，导致 字段和 实体类 的属性无法自动适配，所以要手工写一个对应关系 
+              只需要写一个 Map, 然后 select的返回值 设置为这个MAP， 在业务层不用处理这个事情，连dao层都不用修改，mybatis会自动关联
+       -->
+      
+             <!--   根据查询条件统计 网站内容的 记录数，主要用来分页 -->
+        <select id="getCountOfContentByParams" resultType="int"  parameterType="String" >
+           select  count(*)  from t_contents  ${value} 
+        </select>
+   
+   
+            <!-- 根据查询条件查询 网站内容记录集 支持分页 -->
+      <select id="getContentsByParams" resultType="com.zms.hengjinsuo.bean.TContents"  parameterType="String" > 
+     <!--  <select id="getContentsByParams" resultMap="TContentsMap"  parameterType="String" > -->
+         select  *  from t_contents   ${value}    
+      <!--  SELECT id,time,type_id,title,author,content,keywords,read_count,image_filename,start_show_time,support,opposition,orderid,is_use from  t_contents   ${value}  -->
+ 
+        </select>
+  
+  
+              <!--   根据查询条件统计  路径 记录数，主要用来分页 -->
+        <select id="getCountOfRightActionByParams" resultType="int"  parameterType="String" >
+           select  count(*)  from t_right_actions  ${value} 
+        </select>
+   
+   
+            <!-- 根据查询条件查询 网站内容记录集 支持分页 -->
+      <select id="getRightActionsByParams" resultType="com.zms.hengjinsuo.bean.TRightActions"  parameterType="String" > 
+     <!--  <select id="getContentsByParams" resultMap="TContentsMap"  parameterType="String" > -->
+         select  *  from t_right_actions   ${value}    
+      <!--  SELECT id,time,type_id,title,author,content,keywords,read_count,image_filename,start_show_time,support,opposition,orderid,is_use from  t_contents   ${value}  -->
+ 
+        </select>
+        
+        
+        
+        
+             <!--   根据条件查询 融资项目列表 支持分页 -->
+   <select id="getFinancialsByParams" resultType="com.zms.hengjinsuo.bean.TFinanical"  parameterType="com.zms.hengjinsuo.vo.SqlParams" >
+   
+        select  *  from t_finanical  
+          <!--  如何用ognl来判断 字符串的长度? -->
+         <if test="params!=null">  
+                  where title like '%${params}%'    
+          </if>  
+    
+          order by time desc      limit ${fromNum},${pageSize}
+    
+  </select>
+  
+        <!--   根据查询条件 统计 角色的 记录数，主要用来分页 -->
+        <select id="getCountOfFinancialByParams" resultType="int"  parameterType="com.zms.hengjinsuo.vo.SqlParams" >
+       
+           select  count(*)  from t_finanical  
+            <if test="params!=null">  
+                  where  title  like '%${params}%'  
+          </if>  
+                
+    
+    </select>
+    
+    
+    
+     <!--  根据用户 获取 所有 一级权限列表  主要是 main.html 用来显示菜单 -->
+             <select id="getAllSuperMenusByUserId"    resultType="com.zms.hengjinsuo.bean.TRightTypes"     parameterType="String" >
+       
+                    ${value} 
+            </select>
+        
+        
+    <!--       根据用户id获取到所拥有的 所有一级权限后，遍历 获取该用户拥有的该一级目录下的 所有二级权限 -->  
+                  <select id="getAllSecMenuBySuperId"    resultType="com.zms.hengjinsuo.bean.TRights"     parameterType="String" >
+       
+                    ${value} 
+            </select>
+            
+            
+            
+            
+                 <!--  用来给 菜单管理 使用   一级菜单分页-->
+             <select id="getSuperMenus"    resultType="com.zms.hengjinsuo.bean.TRightTypes"     parameterType="String" >
+       
+                     select * from t_right_types where 1=1    ${value}
+                    
+            </select>
+        
+         <select id="getCountOfSuperMenus"    resultType="int"  parameterType="String" >
+                select count(*) from t_right_types where 1=1 ${value}
+           </select>
+ 
+                <!--  给菜单管理用 二级菜单分页 -->
+                <select id="getSecondMenus"    resultType="com.zms.hengjinsuo.bean.TRights"     parameterType="String" >
+   
+                 select * from t_rights where 1=1    ${value}
+                
+                  </select>
+    
+        <select id="getCountOfSecondMenus"    resultType="int"  parameterType="String" >
+               select count(*) from t_rights  where 1=1 ${value}
+          </select> 
+          
+          
+          
+          
+                <!--  理财客户分页 -->
+                <select id="getVips"    resultType="com.zms.hengjinsuo.bean.TVip"     parameterType="String" >
+   
+                 select * from t_vip  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfVips"    resultType="int"  parameterType="String" >
+			               select count(*) from t_vip  where 1=1 ${value}
+			          </select> 
+          
+          
+                           <!--  融资客户分页 -->
+                <select id="getRongzis"    resultType="com.zms.hengjinsuo.bean.TRongzi"     parameterType="String" >
+   
+                 select * from t_rongzi  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfRongzis"    resultType="int"  parameterType="String" >
+			               select count(*) from t_rongzi  where 1=1 ${value}
+			          </select> 
+			          
+			          
+			          
+			                              <!--  融资客户银行账号分页 -->
+                <select id="getRzBanks"    resultType="com.zms.hengjinsuo.bean.TRzbank"     parameterType="String" >
+   
+                 select * from t_rzbank  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfRzBanks"    resultType="int"  parameterType="String" >
+			               select count(*) from t_rzbank  where 1=1 ${value}
+			          </select>
+			          
+			          
+          
+          		                              <!--  融资项目分页 -->
+                <select id="getInvests"    resultType="com.zms.hengjinsuo.bean.TInvests"     parameterType="String" >
+   
+                 select * from t_invests  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfInvests"    resultType="int"  parameterType="String" >
+			               select count(*) from t_invests  where 1=1 ${value}
+			          </select>
+			          
+			          
+			          
+			           
+          		                              <!--  合同分页 -->
+                <select id="getContracts"    resultType="com.zms.hengjinsuo.bean.TContract"     parameterType="String" >
+   
+                 select * from t_contract  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfContract"    resultType="int"  parameterType="String" >
+			               select count(*) from t_contract  where 1=1 ${value}
+			          </select>
+			          
+			          
+			          
+			          
+			          		                              <!--  还款计划表分页 -->
+                <select id="getSchedules"    resultType="com.zms.hengjinsuo.bean.TSchedule"     parameterType="String" >
+   
+                 select * from t_schedule  where 1=1    ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfSchedule"    resultType="int"  parameterType="String" >
+			               select count(*) from t_schedule  where 1=1 ${value}
+			          </select>
+			          
+			          
+			    <!--        统计某个项目当前融资了多少钱 -->
+			          <select id="getSumOfInvest"    resultType="float"  parameterType="String" >
+			                ${value}
+			          </select>
+			        
+			        
+			        
+			        	    <!--    财务模块 还款计划 导出 -->
+			          <select id="getfinanceDate"    resultType="com.zms.hengjinsuo.vo.ExcelScheduleVo"  parameterType="String" >
+			                ${value}
+			          </select>
+			          
+			               	    <!--    合同  导出 -->
+			          <select id="getContractDate"    resultType="com.zms.hengjinsuo.vo.ExcelContractVo"  parameterType="String" >
+			                ${value}
+			          </select>
+			          
+			                     	    <!--    bill  导出 -->
+			          <select id="getBillDate"    resultType="com.zms.hengjinsuo.vo.ExcelBillVo"  parameterType="String" >
+			                ${value}
+			          </select>
+			          
+			          		          		                              <!--  访谈记录分页 -->
+                <select id="getVipVisitVos"    resultType="com.zms.hengjinsuo.vo.VipVisitVo"     parameterType="String" >
+   
+                          select  t.id  visitId,  v.name vipName, u.realname managerName,t.visitTime  visitTime, t.content  content , t.memo memo , case   when  t.visitType= 1  then  '当面拜访'   when  t.visitType=2 then '电话回访'  when  t.visitType=2 then '短信微信'   END  visitType  
+                          from  t_visit t, t_vip v ,t_user u  where  t.vipid=v.id  and t.managerid=u.id  ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfVipVistis"    resultType="int"  parameterType="String" >
+			                    select count(*) from  t_visit t, t_vip v,t_user u where  t.vipid=v.id  and t.managerid=u.id  ${value}
+			          </select>
+			          
+			          
+			          
+			          
+		         <!--  理财单据记录分页 -->
+                <select id="getBillVos"    resultType="com.zms.hengjinsuo.vo.BillVo"     parameterType="String" >
+   
+                   select  b.id id,c.contractId contractId,b.memony money,date_format(b.contractTime,'%Y-%m-%d') contractTime ,b.longTime longTime,b.apr apr,u.realName manager,v.name vipName,t.name investName,t.rzMoney rzMoney,r.name rzName,
+						  case   when  b.backType= 0  then  '先息后本'   when  b.backType=1 then '等额本息'  when b.backType=2 then '一次性还款付息'   END  backType,
+						    case  when b.flag=0 then '还未还款' when  b.flag=1 then '还款中' when b.flag=2 then '还款结束'  END  flag
+						
+						from t_bill b,t_contract c,t_user u,t_vip v,t_invests t,t_rongzi r
+						
+						where b.contractId=c.id and c.managerid=u.id and c.vipid=v.id and b.investId=t.id and b.rongziid=r.id ${value}
+                
+                  </select>
+    
+			        <select id="getCountOfBillVo"    resultType="int"  parameterType="String" >
+			                    select  count(*) from t_bill b,t_contract c,t_user u,t_vip v,t_invests t where b.contractId=c.id and c.managerid=u.id and c.vipid=v.id and b.investId=t.id   ${value}
+			          </select>
+			          
+			          
+			                <select id="getInvestSumMemonyByBill"    resultType="float"  parameterType="String" >
+			                    select COALESCE(sum(b.memony),0) from t_bill b,t_contract c,t_user u,t_vip v,t_invests t where b.contractId=c.id and c.managerid=u.id and c.vipid=v.id and b.investId=t.id   ${value}
+			          </select>
+			          
+			          
+			          
+			          
+			          
+			                   <!--  日志记录分页 -->
+                            <select id="getLogVos"    resultType="com.zms.hengjinsuo.vo.LogVo"     parameterType="String" >
+   
+                             select u.realname userName, date_format(l.modiTime,'%Y-%m-%d %H:%i') modiTime,l.sourceIp sourceIp,l.content content   from  t_logs l, t_user u   where l.managerId=u.id  ${value}
+                
+                            </select>
+    
+			                  <select id="getCountOfLogVo"    resultType="int"  parameterType="String" >
+			                       select count(*)   from  t_logs l, t_user u   where l.managerId=u.id  ${value}
+			                   </select>
+			          
+			          
+			              <!--    待收款列表分页 -->
+			              <select id="getReceiveVos"    resultType="com.zms.hengjinsuo.vo.ReceiveVo"     parameterType="String" >
+   
+                            select i.name investname,rz.name rzname,i.rzmoney rzmoney,i.apr apr,
+								  i.backtype   backtype, i.contractTime contracttime,
+								r.backmoney backmoney,r.backTime backtime,r.longTime longtime, r.backsort backsort,
+								  r.lastFlag   lastflag,r.realTime realtime,
+								 r.backFlag backflag,
+								b.bankName bankname,b.bankNum banknum,r.id id
+								from t_receive r left join  t_invests i    on r.investId=i.id    left join t_rongzi   rz on i.rongziId=rz.id left join   t_rzbank b on i.rzbankid=b.id
+								 where  1=1  ${value}
+                
+                            </select>
+    
+			                  <select id="getCountOfReceiveVo"    resultType="int"  parameterType="String" >
+			                      select  count(0) from t_receive r left join  t_invests i    on r.investId=i.id    left join t_rongzi   rz on i.rongziId=rz.id left join   t_rzbank b on i.rzbankid=b.id  where  1=1 ${value}
+			                   </select>
+			                   
+			          
+   
+</mapper>

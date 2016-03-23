@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TVisitMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TVisit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="managerId" property="managerid" jdbcType="INTEGER" />
+    <result column="visitTime" property="visittime" jdbcType="DATE" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="writeTime" property="writetime" jdbcType="TIMESTAMP" />
+    <result column="vipId" property="vipid" jdbcType="INTEGER" />
+    <result column="visitType" property="visittype" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, managerId, visitTime, content, memo, writeTime, vipId, visitType, flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TVisitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_visit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_visit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_visit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TVisitExample" >
+    delete from t_visit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TVisit" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_visit (managerId, visitTime, content, 
+      memo, writeTime, vipId, 
+      visitType, flag)
+    values (#{managerid,jdbcType=INTEGER}, #{visittime,jdbcType=DATE}, #{content,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{writetime,jdbcType=TIMESTAMP}, #{vipid,jdbcType=INTEGER}, 
+      #{visittype,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TVisit" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_visit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="managerid != null" >
+        managerId,
+      </if>
+      <if test="visittime != null" >
+        visitTime,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="writetime != null" >
+        writeTime,
+      </if>
+      <if test="vipid != null" >
+        vipId,
+      </if>
+      <if test="visittype != null" >
+        visitType,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="managerid != null" >
+        #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="visittime != null" >
+        #{visittime,jdbcType=DATE},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="writetime != null" >
+        #{writetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vipid != null" >
+        #{vipid,jdbcType=INTEGER},
+      </if>
+      <if test="visittype != null" >
+        #{visittype,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TVisitExample" resultType="java.lang.Integer" >
+    select count(*) from t_visit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_visit
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.managerid != null" >
+        managerId = #{record.managerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.visittime != null" >
+        visitTime = #{record.visittime,jdbcType=DATE},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.writetime != null" >
+        writeTime = #{record.writetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.vipid != null" >
+        vipId = #{record.vipid,jdbcType=INTEGER},
+      </if>
+      <if test="record.visittype != null" >
+        visitType = #{record.visittype,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_visit
+    set id = #{record.id,jdbcType=INTEGER},
+      managerId = #{record.managerid,jdbcType=INTEGER},
+      visitTime = #{record.visittime,jdbcType=DATE},
+      content = #{record.content,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      writeTime = #{record.writetime,jdbcType=TIMESTAMP},
+      vipId = #{record.vipid,jdbcType=INTEGER},
+      visitType = #{record.visittype,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TVisit" >
+    update t_visit
+    <set >
+      <if test="managerid != null" >
+        managerId = #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="visittime != null" >
+        visitTime = #{visittime,jdbcType=DATE},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="writetime != null" >
+        writeTime = #{writetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vipid != null" >
+        vipId = #{vipid,jdbcType=INTEGER},
+      </if>
+      <if test="visittype != null" >
+        visitType = #{visittype,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TVisit" >
+    update t_visit
+    set managerId = #{managerid,jdbcType=INTEGER},
+      visitTime = #{visittime,jdbcType=DATE},
+      content = #{content,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      writeTime = #{writetime,jdbcType=TIMESTAMP},
+      vipId = #{vipid,jdbcType=INTEGER},
+      visitType = #{visittype,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

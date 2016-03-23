@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TContentsMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TContents" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="typeId" property="typeid" jdbcType="INTEGER" />
+    <result column="fileTitle" property="filetitle" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="readCount" property="readcount" jdbcType="INTEGER" />
+    <result column="imageFileName" property="imagefilename" jdbcType="VARCHAR" />
+    <result column="startShowTime" property="startshowtime" jdbcType="TIMESTAMP" />
+    <result column="support" property="support" jdbcType="INTEGER" />
+    <result column="opposition" property="opposition" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="isShow" property="isshow" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zms.hengjinsuo.bean.TContents" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, time, typeId, fileTitle, author, keywords, readCount, imageFileName, startShowTime, 
+    support, opposition, orderid, isShow
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zms.hengjinsuo.bean.TContentsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TContentsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_contents
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_contents
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TContentsExample" >
+    delete from t_contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TContents" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_contents (time, typeId, fileTitle, 
+      author, keywords, readCount, 
+      imageFileName, startShowTime, support, 
+      opposition, orderid, isShow, 
+      content)
+    values (#{time,jdbcType=TIMESTAMP}, #{typeid,jdbcType=INTEGER}, #{filetitle,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{readcount,jdbcType=INTEGER}, 
+      #{imagefilename,jdbcType=VARCHAR}, #{startshowtime,jdbcType=TIMESTAMP}, #{support,jdbcType=INTEGER}, 
+      #{opposition,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, #{isshow,jdbcType=BIT}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TContents" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_contents
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="typeid != null" >
+        typeId,
+      </if>
+      <if test="filetitle != null" >
+        fileTitle,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="readcount != null" >
+        readCount,
+      </if>
+      <if test="imagefilename != null" >
+        imageFileName,
+      </if>
+      <if test="startshowtime != null" >
+        startShowTime,
+      </if>
+      <if test="support != null" >
+        support,
+      </if>
+      <if test="opposition != null" >
+        opposition,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="isshow != null" >
+        isShow,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="filetitle != null" >
+        #{filetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="readcount != null" >
+        #{readcount,jdbcType=INTEGER},
+      </if>
+      <if test="imagefilename != null" >
+        #{imagefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="startshowtime != null" >
+        #{startshowtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="support != null" >
+        #{support,jdbcType=INTEGER},
+      </if>
+      <if test="opposition != null" >
+        #{opposition,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="isshow != null" >
+        #{isshow,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TContentsExample" resultType="java.lang.Integer" >
+    select count(*) from t_contents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_contents
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.typeid != null" >
+        typeId = #{record.typeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.filetitle != null" >
+        fileTitle = #{record.filetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readcount != null" >
+        readCount = #{record.readcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.imagefilename != null" >
+        imageFileName = #{record.imagefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startshowtime != null" >
+        startShowTime = #{record.startshowtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.support != null" >
+        support = #{record.support,jdbcType=INTEGER},
+      </if>
+      <if test="record.opposition != null" >
+        opposition = #{record.opposition,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderid != null" >
+        orderid = #{record.orderid,jdbcType=INTEGER},
+      </if>
+      <if test="record.isshow != null" >
+        isShow = #{record.isshow,jdbcType=BIT},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_contents
+    set id = #{record.id,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      typeId = #{record.typeid,jdbcType=INTEGER},
+      fileTitle = #{record.filetitle,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      readCount = #{record.readcount,jdbcType=INTEGER},
+      imageFileName = #{record.imagefilename,jdbcType=VARCHAR},
+      startShowTime = #{record.startshowtime,jdbcType=TIMESTAMP},
+      support = #{record.support,jdbcType=INTEGER},
+      opposition = #{record.opposition,jdbcType=INTEGER},
+      orderid = #{record.orderid,jdbcType=INTEGER},
+      isShow = #{record.isshow,jdbcType=BIT},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_contents
+    set id = #{record.id,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      typeId = #{record.typeid,jdbcType=INTEGER},
+      fileTitle = #{record.filetitle,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      readCount = #{record.readcount,jdbcType=INTEGER},
+      imageFileName = #{record.imagefilename,jdbcType=VARCHAR},
+      startShowTime = #{record.startshowtime,jdbcType=TIMESTAMP},
+      support = #{record.support,jdbcType=INTEGER},
+      opposition = #{record.opposition,jdbcType=INTEGER},
+      orderid = #{record.orderid,jdbcType=INTEGER},
+      isShow = #{record.isshow,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TContents" >
+    update t_contents
+    <set >
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="typeid != null" >
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="filetitle != null" >
+        fileTitle = #{filetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="readcount != null" >
+        readCount = #{readcount,jdbcType=INTEGER},
+      </if>
+      <if test="imagefilename != null" >
+        imageFileName = #{imagefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="startshowtime != null" >
+        startShowTime = #{startshowtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="support != null" >
+        support = #{support,jdbcType=INTEGER},
+      </if>
+      <if test="opposition != null" >
+        opposition = #{opposition,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="isshow != null" >
+        isShow = #{isshow,jdbcType=BIT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zms.hengjinsuo.bean.TContents" >
+    update t_contents
+    set time = #{time,jdbcType=TIMESTAMP},
+      typeId = #{typeid,jdbcType=INTEGER},
+      fileTitle = #{filetitle,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      readCount = #{readcount,jdbcType=INTEGER},
+      imageFileName = #{imagefilename,jdbcType=VARCHAR},
+      startShowTime = #{startshowtime,jdbcType=TIMESTAMP},
+      support = #{support,jdbcType=INTEGER},
+      opposition = #{opposition,jdbcType=INTEGER},
+      orderid = #{orderid,jdbcType=INTEGER},
+      isShow = #{isshow,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TContents" >
+    update t_contents
+    set time = #{time,jdbcType=TIMESTAMP},
+      typeId = #{typeid,jdbcType=INTEGER},
+      fileTitle = #{filetitle,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      readCount = #{readcount,jdbcType=INTEGER},
+      imageFileName = #{imagefilename,jdbcType=VARCHAR},
+      startShowTime = #{startshowtime,jdbcType=TIMESTAMP},
+      support = #{support,jdbcType=INTEGER},
+      opposition = #{opposition,jdbcType=INTEGER},
+      orderid = #{orderid,jdbcType=INTEGER},
+      isShow = #{isshow,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

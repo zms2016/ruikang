@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TReceiveMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TReceive" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="investId" property="investid" jdbcType="INTEGER" />
+    <result column="backMoney" property="backmoney" jdbcType="REAL" />
+    <result column="backTime" property="backtime" jdbcType="DATE" />
+    <result column="realTime" property="realtime" jdbcType="DATE" />
+    <result column="backFlag" property="backflag" jdbcType="INTEGER" />
+    <result column="backSort" property="backsort" jdbcType="INTEGER" />
+    <result column="lastFlag" property="lastflag" jdbcType="BIT" />
+    <result column="longTime" property="longtime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, investId, backMoney, backTime, realTime, backFlag, backSort, lastFlag, longTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TReceiveExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_receive
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_receive
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_receive
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TReceiveExample" >
+    delete from t_receive
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TReceive" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_receive (investId, backMoney, backTime, 
+      realTime, backFlag, backSort, 
+      lastFlag, longTime)
+    values (#{investid,jdbcType=INTEGER}, #{backmoney,jdbcType=REAL}, #{backtime,jdbcType=DATE}, 
+      #{realtime,jdbcType=DATE}, #{backflag,jdbcType=INTEGER}, #{backsort,jdbcType=INTEGER}, 
+      #{lastflag,jdbcType=BIT}, #{longtime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TReceive" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_receive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="investid != null" >
+        investId,
+      </if>
+      <if test="backmoney != null" >
+        backMoney,
+      </if>
+      <if test="backtime != null" >
+        backTime,
+      </if>
+      <if test="realtime != null" >
+        realTime,
+      </if>
+      <if test="backflag != null" >
+        backFlag,
+      </if>
+      <if test="backsort != null" >
+        backSort,
+      </if>
+      <if test="lastflag != null" >
+        lastFlag,
+      </if>
+      <if test="longtime != null" >
+        longTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="investid != null" >
+        #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="backmoney != null" >
+        #{backmoney,jdbcType=REAL},
+      </if>
+      <if test="backtime != null" >
+        #{backtime,jdbcType=DATE},
+      </if>
+      <if test="realtime != null" >
+        #{realtime,jdbcType=DATE},
+      </if>
+      <if test="backflag != null" >
+        #{backflag,jdbcType=INTEGER},
+      </if>
+      <if test="backsort != null" >
+        #{backsort,jdbcType=INTEGER},
+      </if>
+      <if test="lastflag != null" >
+        #{lastflag,jdbcType=BIT},
+      </if>
+      <if test="longtime != null" >
+        #{longtime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TReceiveExample" resultType="java.lang.Integer" >
+    select count(*) from t_receive
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_receive
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.investid != null" >
+        investId = #{record.investid,jdbcType=INTEGER},
+      </if>
+      <if test="record.backmoney != null" >
+        backMoney = #{record.backmoney,jdbcType=REAL},
+      </if>
+      <if test="record.backtime != null" >
+        backTime = #{record.backtime,jdbcType=DATE},
+      </if>
+      <if test="record.realtime != null" >
+        realTime = #{record.realtime,jdbcType=DATE},
+      </if>
+      <if test="record.backflag != null" >
+        backFlag = #{record.backflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.backsort != null" >
+        backSort = #{record.backsort,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastflag != null" >
+        lastFlag = #{record.lastflag,jdbcType=BIT},
+      </if>
+      <if test="record.longtime != null" >
+        longTime = #{record.longtime,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_receive
+    set id = #{record.id,jdbcType=INTEGER},
+      investId = #{record.investid,jdbcType=INTEGER},
+      backMoney = #{record.backmoney,jdbcType=REAL},
+      backTime = #{record.backtime,jdbcType=DATE},
+      realTime = #{record.realtime,jdbcType=DATE},
+      backFlag = #{record.backflag,jdbcType=INTEGER},
+      backSort = #{record.backsort,jdbcType=INTEGER},
+      lastFlag = #{record.lastflag,jdbcType=BIT},
+      longTime = #{record.longtime,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TReceive" >
+    update t_receive
+    <set >
+      <if test="investid != null" >
+        investId = #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="backmoney != null" >
+        backMoney = #{backmoney,jdbcType=REAL},
+      </if>
+      <if test="backtime != null" >
+        backTime = #{backtime,jdbcType=DATE},
+      </if>
+      <if test="realtime != null" >
+        realTime = #{realtime,jdbcType=DATE},
+      </if>
+      <if test="backflag != null" >
+        backFlag = #{backflag,jdbcType=INTEGER},
+      </if>
+      <if test="backsort != null" >
+        backSort = #{backsort,jdbcType=INTEGER},
+      </if>
+      <if test="lastflag != null" >
+        lastFlag = #{lastflag,jdbcType=BIT},
+      </if>
+      <if test="longtime != null" >
+        longTime = #{longtime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TReceive" >
+    update t_receive
+    set investId = #{investid,jdbcType=INTEGER},
+      backMoney = #{backmoney,jdbcType=REAL},
+      backTime = #{backtime,jdbcType=DATE},
+      realTime = #{realtime,jdbcType=DATE},
+      backFlag = #{backflag,jdbcType=INTEGER},
+      backSort = #{backsort,jdbcType=INTEGER},
+      lastFlag = #{lastflag,jdbcType=BIT},
+      longTime = #{longtime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

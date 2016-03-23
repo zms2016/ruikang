@@ -1,0 +1,13 @@
+
+
+
+             <!--  默认
+                      <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true"> 
+              -->
+              
+              <!-- 若果要设置访问localhost  默认 访问base目录， 可以增加一个 contentpath="" docBase="webapps/zms"  .   其他的 可以往下面加。
+                     如果没要求，这 tomcat不需要改动
+                 -->
+                <Host name="localhost"  appBase=""   unpackWARs="true" autoDeploy="true">
+              <Context path="" docBase="webapps/zms" reloadable="true"  />  
+              <Context path="/webapp" docBase="webapps/webapp" reloadable="true"  />  

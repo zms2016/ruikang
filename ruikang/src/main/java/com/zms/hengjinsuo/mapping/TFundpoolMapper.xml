@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TFundpoolMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TFundpool" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="REAL" />
+    <result column="md5" property="md5" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="fundpool" property="fundpool" jdbcType="REAL" />
+    <result column="flow" property="flow" jdbcType="SMALLINT" />
+    <result column="flowtype" property="flowtype" jdbcType="SMALLINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, money, md5, time, fundpool, flow, flowtype, operator
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TFundpoolExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_fundpool
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_fundpool
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_fundpool
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TFundpoolExample" >
+    delete from t_fundpool
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TFundpool" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_fundpool (money, md5, time, 
+      fundpool, flow, flowtype, 
+      operator)
+    values (#{money,jdbcType=REAL}, #{md5,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
+      #{fundpool,jdbcType=REAL}, #{flow,jdbcType=SMALLINT}, #{flowtype,jdbcType=SMALLINT}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TFundpool" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_fundpool
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="md5 != null" >
+        md5,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="fundpool != null" >
+        fundpool,
+      </if>
+      <if test="flow != null" >
+        flow,
+      </if>
+      <if test="flowtype != null" >
+        flowtype,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="money != null" >
+        #{money,jdbcType=REAL},
+      </if>
+      <if test="md5 != null" >
+        #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fundpool != null" >
+        #{fundpool,jdbcType=REAL},
+      </if>
+      <if test="flow != null" >
+        #{flow,jdbcType=SMALLINT},
+      </if>
+      <if test="flowtype != null" >
+        #{flowtype,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TFundpoolExample" resultType="java.lang.Integer" >
+    select count(*) from t_fundpool
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_fundpool
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.money != null" >
+        money = #{record.money,jdbcType=REAL},
+      </if>
+      <if test="record.md5 != null" >
+        md5 = #{record.md5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fundpool != null" >
+        fundpool = #{record.fundpool,jdbcType=REAL},
+      </if>
+      <if test="record.flow != null" >
+        flow = #{record.flow,jdbcType=SMALLINT},
+      </if>
+      <if test="record.flowtype != null" >
+        flowtype = #{record.flowtype,jdbcType=SMALLINT},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_fundpool
+    set id = #{record.id,jdbcType=INTEGER},
+      money = #{record.money,jdbcType=REAL},
+      md5 = #{record.md5,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      fundpool = #{record.fundpool,jdbcType=REAL},
+      flow = #{record.flow,jdbcType=SMALLINT},
+      flowtype = #{record.flowtype,jdbcType=SMALLINT},
+      operator = #{record.operator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TFundpool" >
+    update t_fundpool
+    <set >
+      <if test="money != null" >
+        money = #{money,jdbcType=REAL},
+      </if>
+      <if test="md5 != null" >
+        md5 = #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fundpool != null" >
+        fundpool = #{fundpool,jdbcType=REAL},
+      </if>
+      <if test="flow != null" >
+        flow = #{flow,jdbcType=SMALLINT},
+      </if>
+      <if test="flowtype != null" >
+        flowtype = #{flowtype,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TFundpool" >
+    update t_fundpool
+    set money = #{money,jdbcType=REAL},
+      md5 = #{md5,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      fundpool = #{fundpool,jdbcType=REAL},
+      flow = #{flow,jdbcType=SMALLINT},
+      flowtype = #{flowtype,jdbcType=SMALLINT},
+      operator = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

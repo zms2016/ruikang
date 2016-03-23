@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Aspect Ratio with Preview Pane | Jcrop Demo</title>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
+  <link  rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <link  rel="stylesheet" href="../FontAwesome4.4/css/font-awesome.css">
+
+
+   <script src="../../js/jquery-1.11.3.min.js"></script>
+
+  <script src="../bootstrap/js/bootstrap.min.js"></script>
+  <link  rel="stylesheet" href="dist/cropper.css">
+ <script src="dist/cropper.js"></script>
+
+
+
+<style type="text/css">
+
+
+
+  #subBtn{
+
+    position: absolute;
+    z-index: 2001;
+    top: 440px;
+    left: 1170px;
+  }
+
+  .box{
+
+    width: 980px;
+    margin: 0 auto;
+    margin-top:100px;
+  }
+
+
+.a_pic{
+  position: relative;
+  background: #be0000;
+  width: 97px;
+  height: 28px;
+  line-height: 28px;
+  color: #fff;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.file{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  line-height: 0;
+  opacity: 0;
+}
+
+</style>
+
+
+</head>
+<body>
+
+<div>
+  <img id="image" src="assets/img/picture.jpg">
+</div>
+
+
+<div class="box" style="border: 1px solid #009f95">
+
+  <form>
+
+    <a href="#" class="a_pic">
+      <span class="fa fa-picture-o"></span>选择照片
+      <input id="file" type="file" name="tmp_avatar_file" class="file">
+    </a>
+    <span style="font-family: 'Microsoft YaHei';font-size: 12px;color: rgb(102,102,102)">只能选择 jpg,png</span>
+  </form>
+
+
+<!--
+  <img src="../../images/aaa.jpg" id="target"  width="600px" />-->
+
+
+
+
+
+        <button  id="subBtn">确定</button>
+
+
+
+  </div>
+<script>
+
+
+  $('#image').cropper({
+    aspectRatio: 1 / 1,
+    crop: function(e) {
+      // Output the result data for cropping image.
+      console.log(e.x);
+      console.log(e.y);
+      console.log(e.width);
+      console.log(e.height);
+      console.log(e.rotate);
+      console.log(e.scaleX);
+      console.log(e.scaleY);
+    }
+  });
+
+
+</script>
+</body>
+</html>
+

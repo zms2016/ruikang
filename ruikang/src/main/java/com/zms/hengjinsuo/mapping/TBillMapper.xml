@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.hengjinsuo.dao.TBillMapper" >
+  <resultMap id="BaseResultMap" type="com.zms.hengjinsuo.bean.TBill" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="contractId" property="contractid" jdbcType="INTEGER" />
+    <result column="investId" property="investid" jdbcType="INTEGER" />
+    <result column="memony" property="memony" jdbcType="REAL" />
+    <result column="extMemony" property="extmemony" jdbcType="REAL" />
+    <result column="contractTime" property="contracttime" jdbcType="DATE" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="isNext" property="isnext" jdbcType="BIT" />
+    <result column="apr" property="apr" jdbcType="REAL" />
+    <result column="longTime" property="longtime" jdbcType="INTEGER" />
+    <result column="beginTime" property="begintime" jdbcType="DATE" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="rzbankId" property="rzbankid" jdbcType="INTEGER" />
+    <result column="rongziId" property="rongziid" jdbcType="INTEGER" />
+    <result column="firstTime" property="firsttime" jdbcType="DATE" />
+    <result column="backType" property="backtype" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, contractId, investId, memony, extMemony, contractTime, flag, isNext, apr, longTime, 
+    beginTime, memo, rzbankId, rongziId, firstTime, backType
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zms.hengjinsuo.bean.TBillExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_bill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zms.hengjinsuo.bean.TBillExample" >
+    delete from t_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zms.hengjinsuo.bean.TBill" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_bill (contractId, investId, memony, 
+      extMemony, contractTime, flag, 
+      isNext, apr, longTime, beginTime, 
+      memo, rzbankId, rongziId, 
+      firstTime, backType)
+    values (#{contractid,jdbcType=INTEGER}, #{investid,jdbcType=INTEGER}, #{memony,jdbcType=REAL}, 
+      #{extmemony,jdbcType=REAL}, #{contracttime,jdbcType=DATE}, #{flag,jdbcType=INTEGER}, 
+      #{isnext,jdbcType=BIT}, #{apr,jdbcType=REAL}, #{longtime,jdbcType=INTEGER}, #{begintime,jdbcType=DATE}, 
+      #{memo,jdbcType=VARCHAR}, #{rzbankid,jdbcType=INTEGER}, #{rongziid,jdbcType=INTEGER}, 
+      #{firsttime,jdbcType=DATE}, #{backtype,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zms.hengjinsuo.bean.TBill" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractid != null" >
+        contractId,
+      </if>
+      <if test="investid != null" >
+        investId,
+      </if>
+      <if test="memony != null" >
+        memony,
+      </if>
+      <if test="extmemony != null" >
+        extMemony,
+      </if>
+      <if test="contracttime != null" >
+        contractTime,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="isnext != null" >
+        isNext,
+      </if>
+      <if test="apr != null" >
+        apr,
+      </if>
+      <if test="longtime != null" >
+        longTime,
+      </if>
+      <if test="begintime != null" >
+        beginTime,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="rzbankid != null" >
+        rzbankId,
+      </if>
+      <if test="rongziid != null" >
+        rongziId,
+      </if>
+      <if test="firsttime != null" >
+        firstTime,
+      </if>
+      <if test="backtype != null" >
+        backType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractid != null" >
+        #{contractid,jdbcType=INTEGER},
+      </if>
+      <if test="investid != null" >
+        #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="memony != null" >
+        #{memony,jdbcType=REAL},
+      </if>
+      <if test="extmemony != null" >
+        #{extmemony,jdbcType=REAL},
+      </if>
+      <if test="contracttime != null" >
+        #{contracttime,jdbcType=DATE},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="isnext != null" >
+        #{isnext,jdbcType=BIT},
+      </if>
+      <if test="apr != null" >
+        #{apr,jdbcType=REAL},
+      </if>
+      <if test="longtime != null" >
+        #{longtime,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null" >
+        #{begintime,jdbcType=DATE},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="rzbankid != null" >
+        #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="rongziid != null" >
+        #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="firsttime != null" >
+        #{firsttime,jdbcType=DATE},
+      </if>
+      <if test="backtype != null" >
+        #{backtype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zms.hengjinsuo.bean.TBillExample" resultType="java.lang.Integer" >
+    select count(*) from t_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_bill
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractid != null" >
+        contractId = #{record.contractid,jdbcType=INTEGER},
+      </if>
+      <if test="record.investid != null" >
+        investId = #{record.investid,jdbcType=INTEGER},
+      </if>
+      <if test="record.memony != null" >
+        memony = #{record.memony,jdbcType=REAL},
+      </if>
+      <if test="record.extmemony != null" >
+        extMemony = #{record.extmemony,jdbcType=REAL},
+      </if>
+      <if test="record.contracttime != null" >
+        contractTime = #{record.contracttime,jdbcType=DATE},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.isnext != null" >
+        isNext = #{record.isnext,jdbcType=BIT},
+      </if>
+      <if test="record.apr != null" >
+        apr = #{record.apr,jdbcType=REAL},
+      </if>
+      <if test="record.longtime != null" >
+        longTime = #{record.longtime,jdbcType=INTEGER},
+      </if>
+      <if test="record.begintime != null" >
+        beginTime = #{record.begintime,jdbcType=DATE},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rzbankid != null" >
+        rzbankId = #{record.rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rongziid != null" >
+        rongziId = #{record.rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="record.firsttime != null" >
+        firstTime = #{record.firsttime,jdbcType=DATE},
+      </if>
+      <if test="record.backtype != null" >
+        backType = #{record.backtype,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_bill
+    set id = #{record.id,jdbcType=INTEGER},
+      contractId = #{record.contractid,jdbcType=INTEGER},
+      investId = #{record.investid,jdbcType=INTEGER},
+      memony = #{record.memony,jdbcType=REAL},
+      extMemony = #{record.extmemony,jdbcType=REAL},
+      contractTime = #{record.contracttime,jdbcType=DATE},
+      flag = #{record.flag,jdbcType=INTEGER},
+      isNext = #{record.isnext,jdbcType=BIT},
+      apr = #{record.apr,jdbcType=REAL},
+      longTime = #{record.longtime,jdbcType=INTEGER},
+      beginTime = #{record.begintime,jdbcType=DATE},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      rzbankId = #{record.rzbankid,jdbcType=INTEGER},
+      rongziId = #{record.rongziid,jdbcType=INTEGER},
+      firstTime = #{record.firsttime,jdbcType=DATE},
+      backType = #{record.backtype,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zms.hengjinsuo.bean.TBill" >
+    update t_bill
+    <set >
+      <if test="contractid != null" >
+        contractId = #{contractid,jdbcType=INTEGER},
+      </if>
+      <if test="investid != null" >
+        investId = #{investid,jdbcType=INTEGER},
+      </if>
+      <if test="memony != null" >
+        memony = #{memony,jdbcType=REAL},
+      </if>
+      <if test="extmemony != null" >
+        extMemony = #{extmemony,jdbcType=REAL},
+      </if>
+      <if test="contracttime != null" >
+        contractTime = #{contracttime,jdbcType=DATE},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="isnext != null" >
+        isNext = #{isnext,jdbcType=BIT},
+      </if>
+      <if test="apr != null" >
+        apr = #{apr,jdbcType=REAL},
+      </if>
+      <if test="longtime != null" >
+        longTime = #{longtime,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null" >
+        beginTime = #{begintime,jdbcType=DATE},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="rzbankid != null" >
+        rzbankId = #{rzbankid,jdbcType=INTEGER},
+      </if>
+      <if test="rongziid != null" >
+        rongziId = #{rongziid,jdbcType=INTEGER},
+      </if>
+      <if test="firsttime != null" >
+        firstTime = #{firsttime,jdbcType=DATE},
+      </if>
+      <if test="backtype != null" >
+        backType = #{backtype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zms.hengjinsuo.bean.TBill" >
+    update t_bill
+    set contractId = #{contractid,jdbcType=INTEGER},
+      investId = #{investid,jdbcType=INTEGER},
+      memony = #{memony,jdbcType=REAL},
+      extMemony = #{extmemony,jdbcType=REAL},
+      contractTime = #{contracttime,jdbcType=DATE},
+      flag = #{flag,jdbcType=INTEGER},
+      isNext = #{isnext,jdbcType=BIT},
+      apr = #{apr,jdbcType=REAL},
+      longTime = #{longtime,jdbcType=INTEGER},
+      beginTime = #{begintime,jdbcType=DATE},
+      memo = #{memo,jdbcType=VARCHAR},
+      rzbankId = #{rzbankid,jdbcType=INTEGER},
+      rongziId = #{rongziid,jdbcType=INTEGER},
+      firstTime = #{firsttime,jdbcType=DATE},
+      backType = #{backtype,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

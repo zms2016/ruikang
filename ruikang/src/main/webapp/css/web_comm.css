@@ -1,0 +1,324 @@
+   /*公用*/
+          *{
+              margin: 0;
+              padding: 0;
+              border: 0;
+           
+              font-size: 14px;
+
+
+          }
+
+         .web_font{
+            font-family: 微软雅黑,Arial;
+         
+         }
+         
+      
+         
+         a{
+             text-decoration:none;
+         }
+         a:link{
+             text-decoration:none;
+         }
+         a:visited{
+             text-decoration:none;
+         }
+         a:hover{
+             text-decoration:none;
+         }
+         a:active{
+             text-decoration:none;
+         }
+
+           ul li{
+               list-style:none;
+           }
+
+          ol li{
+               list-style:none;
+           }
+      
+
+           /*公用结束*/
+           
+           
+              /* 图标集合*/
+           .web_icons{background:url(../images/icon.png);display:block;float:left;}
+
+
+            /* 图标集合*/
+           .bg_icons{
+               background: url(../images/bg.png);
+               display: block;
+               float: left;
+               background-repeat: no-repeat;
+        
+           }
+              
+             /*  橙色字体 */
+             .f_orange{color:#FA8124}
+            .f_blue{color:#29A7E1}
+          
+         /*   灰色背景 */
+ 
+	        .grey_bg{background-color:rgb(250,250,250);}
+			.green{color:#060;}
+	
+			.red{color:#f00;}
+			.ft_dpgrey{color:#434343;}
+			.ft_qgrey{color:#888888;}
+			.ft_orange{color:#F46948;}
+
+	       /*  
+	         字体大小 */
+	        .px12{font-size:12px;}
+			.px13{font-size:13px;}
+			.px14{font-size:14px;}
+			.px15{font-size:15px;}
+			.px16{font-size:16px;}
+			.px18{font-size:18px;}
+			.px20{font-size:20px;}
+			.px22{font-size:22px;}
+			.px24{font-size:24px;}
+			.px26{font-size:26px;}
+	        
+	        
+	        /*边距*/
+		.mt10{margin-top:10px;}
+		.mt2{margin-top:2px;}
+		.mt5{margin-top:5px;}
+		.mt8{margin-top:8px;}
+		.mt20{margin-top:20px;}
+		.mt30{margin-top:30px;}
+		.mt40{margin-top:40px;}
+		
+		
+		.ml10{margin-left:10px;}
+		
+		.mb2{margin-bottom:2px;}
+		.mb5{margin-bottom:5px;}
+		.mb8{margin-bottom:8px;}
+		.mb10{margin-bottom:10px;}
+		.mb20{margin-bottom:50px;}
+	 
+		.mb30{margin-bottom:30px;}
+		.mb40{margin-bottom:40px;}
+				 
+				
+		.mr10{margin-right:10px;}
+		.mr8{margin-right:8px;}
+		.mr15{margin-right:15px;}
+		.mr5{margin-right:5px;}
+		.mr20{margin-right:20px;}
+		.ml5{margin-left:5px;}
+		.ml15{margin-left:15px;}
+		.ml10{margin-left:40px;}
+		.ml20{margin-left:20px;}
+		
+		
+		.pt10{padding-top:10px;}
+		.pt20{padding-top:20px;}
+		.pt30{padding-top:30px;}
+		.pt40{padding-top:40px;}
+			
+		.pb10{padding-bottom:10px;}
+		.pb20{padding-bottom:20px;}
+		.pb30{padding-bottom:30px;}
+		.pb40{padding-bottom:40px;}
+		.pb50{padding-bottom:50px;}
+		
+		.pd10{padding:10px;}
+		.pd20{padding:20px;}
+		.pd30{padding:30px;}
+		
+ 
+	        
+	        
+	        
+           /*底部部分*/
+           .footer_link{background-color:#35393C;color:#676765}
+           .footer_linke a{color:#676765}
+           .help_link h3{font-size:16px;color:#CCCCCC}
+           .help_link ul li{height:25px;line-height:25px;}
+           .help_link ul li a{color:#999999}
+           .help_contact ul li{color:#C3C3C5;line-height:30px;}
+           .help_contact h3{font-size:16px;color:#CCCCCC}
+           .bigtel{font-size:30px;color:#FF6E02}
+
+
+           /*最底部 右边几个小图标*/
+           .foot_right_icons{padding-top:20px;}
+
+           .i_flink_itc{width:28px;height:28px;background-position:-111px -67px;float:left;margin-right:15px;}
+           .i_flink_norton{width:64px;height:38px; background-position:-161px -66px;float:left;margin-right:15px;}
+           .i_flink_chengxin{width:75px;height:28px;float:left; background-position:-109px -118px;margin-right:15px;}
+           .i_flink_kexin{width:67px;height:27px;float:left; background-position:-217px -119px;margin-right:15px;}
+           .i_flink_wangshangjiaoyi{width:76px;height:28px;float:left; background-position:-107px -169px;margin-right:15px;}
+
+
+          /*结束底部部分*/
+
+
+       
+            /*左右两边的DIV 都需要圆角*/
+           .divc-comm{
+               border: 1px solid #E6E7EC;
+               border-radius: 4px;
+               background-color: #FFF;
+           }
+          /* 左右两边的内容容器*/
+          .content-box{
+               width: 1170px;
+               margin:0 auto;
+              -moz-animation-duration: 0s;
+              -o-animation-duration: 0s;
+              animation-duration: 0s;
+             /*   min-height: 560px;*/
+              height:100%;
+              overflow:hidden;
+             /*  上面2行 根据内容 自适应高度*/
+              padding-top: 20px;
+              padding-bottom: 20px;
+
+          }
+
+           /*  左边菜单*/
+          .left_menu{
+              background-color: #fefefe;
+              float: left;
+              width: 198px;
+              margin-right: 10px;
+
+          }
+            /* 左边菜单上的 主文字  */
+           .left_menu  h3{
+               height: 55px;
+               width: 198px;
+              /*  background-color: #4485D5; */
+              background-color: #4485D5;
+               font-size: 16px;
+               text-align: center;
+               color: #fff;
+               line-height: 55px;
+               border-radius: 4px 4px 0px 0px;
+               display: block;
+               float: left;
+               margin: 0px;
+           }
+
+             /* 菜单列表 */
+           .left_menu ul li{
+
+               float: left;
+               height: 50px;
+               width: 198px;
+               border-bottom: 1px solid #E6E7EC;
+               line-height: 50px;
+               font-size: 16px;
+               text-align: center;
+           }
+
+            /*  设置选中项的 背景图片 箭头 */
+           .left_menu ul li.active i{
+
+              display:block;width:11px;height:11px;float:left;background-position:0px -313px;
+           }
+
+
+            .left_menu ul li a{
+                color: #337ab7;
+                font-size: 16px;
+                display: block;
+                float: left;
+                width: 170px;
+                text-align: center;
+                height: 50px;
+                line-height: 50px;
+
+            }
+            
+            
+                 .left_menu ul li a:hover{
+                         
+                          
+                         border-left: solid 4px #EC900A;
+                          
+            }
+            
+            
+            
+
+
+           .left_menu ul li i{
+
+               display: block;
+               width: 11px;
+               height: 11px;
+               float: left;
+               background-position: 0px -331px;
+               margin-top: 20px;
+           }
+
+           /*左边菜单结束*/
+
+
+
+
+          /* 右边内容开始*/
+          
+                     
+      /* 内容部分*/
+               /*内容部分总容器*/
+           .content-warp{
+               padding:0;
+             /*   background-color:#F4F5FA; */
+               background-color:rgb(250,250,250) ;
+           }
+   
+          
+          
+           .right_content{
+               width: 962px;
+               min-height:700px;
+               float: left;
+               padding: 20px 30px 10px 30px;
+
+           }
+           
+           
+        
+         
+
+ 
+ 
+  /*   主页，  新闻 ，动态 共用 列表样式 */
+           
+           .news_list ul li{height:40px;line-height:40px; border-bottom:1px solid #E0E1E3}
+			.news_list ul li a{display:block;float:left;color:#4B4B4D;width:520px;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;}
+			.news_list ul li span{float:right;margin-right:60px;}
+          /*    列表 前面的图标 */
+           .i_arrow{width:4px;height:5px;background-position:-30px 0px;float:left;margin-top:18px;margin-right:8px;}
+
+
+
+           
+
+	
+		 
+		 
+		 
+		 
+		 /*   栏目 在导航下面的那个大图 */
+        .about_ad{
+	    background: url(../images/aboutusbg.jpg) no-repeat 50% 50% #86c0ee;
+    height: 230px;
+    
+        }
+    
+
+
+
+           
+           
