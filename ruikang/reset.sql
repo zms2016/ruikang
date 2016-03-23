@@ -14,3 +14,5 @@ truncate table   t_receive  ;
 truncate table  t_schedule   ;
 
 truncate table  t_visit   ;
+
+//kkk
